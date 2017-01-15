@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Neighbourhood Map</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+    <body>
+    <section class="container" id="main">
+        <div class="row header">
+         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 id="greeting" class="greeting">Neighbourhood Map</h2>
+            </div>
+        </div>
+        <a id="menu">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+            </svg>
+        </a>
+        <nav class="" id="listSect">
+            <h3>List of places</h3>
+                <ul data-bind= 'foreach: filteredPl()'>
+                    <li data-bind= 'text:locationName, click: $parent.setCurrentLocation'>
+                </ul>
+                <div class="col-md-12" id="wikiSec">
+                    <h3>Wikipedia section</h3>
+                    <div data-bind = 'with: currentLocation()'>
+                    <p id = "current" data-bind = 'text:locationName' class="hidden"></p>
+                    </div>
+                    <ul id="wiki-articles">Wiki articles will go here</ul>
+                </div>
+        </nav>
+        <div class="row">
+                <div class="col-md-12" id="map-title">
+                    <label>Search:</label>
+            <input type="search" class="form-control" data-bind="textInput: query" autocomplete="off" />
+                    <div id="mapDiv">
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/bootstrap.js"></script>
+    <script src="js/libs/knockout-3.4.1.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/script.js"></script>
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
+
+    </body>
+</html>

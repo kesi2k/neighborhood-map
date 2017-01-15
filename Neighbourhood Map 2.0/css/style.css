@@ -1,0 +1,42 @@
+* {
+  //outline: 1px solid red !important;
+}
+
+body {background-color: #CAE4DB;}
+
+/*#CAEBF2*/
+
+a#menu svg {
+    width: 40px;
+    fill: #000;
+      }
+
+#map-title{
+    text-align: right;
+}
+
+nav {
+
+    width: 450px;
+    height: 100%;
+    position: absolute;
+    z-index:1;
+    /* This trasform moves the drawer off canvas. */
+    transform: translate(-800px, 0);
+    /*Animate the transition*/
+    transition: transform 0.5s ease;
+}
+
+/* Open the navbar*/
+nav.open {
+    transform: translate(0, 0);
+}
+
+#listSect {
+    background-color: #E8E8E8;
+}
+
+ #mapDiv {
+    height: 400px;
+    width: 100%;
+}
