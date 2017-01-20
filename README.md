@@ -14,8 +14,3 @@ The CSS folder contains a bootstrap.css and style.css
 The JS folder contains a helper.js and script.js
 
 
-## Demo
-To use project locally copy these files to a directory. The project uses Google App Engine(GAE) to run locally.
-With GAE use the add existing application feature located in the file menu.
-Once added run the project on localhost with assigned port. "http://localhost:<port#>"
-The live website is served on Google Appspot
