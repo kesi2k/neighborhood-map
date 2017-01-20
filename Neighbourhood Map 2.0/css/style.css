@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: #4A96AD;
+    background-color: #4a96ad;
 }
 
 html,
@@ -14,21 +14,23 @@ body {
   padding: 0px
 }
 
-a#menu svg {
+
+#menu svg {
     width: 40px;
     fill: #000;
+}
 
-      }
 
-#map-title{
+#map-title {
     text-align: right;
     margin-left:25px;
 }
-#main{
+
+
+#main {
     width:100%;
     height:100%;
 }
-
 
 
 nav {
@@ -41,51 +43,60 @@ nav {
     transition: transform 0.5s ease;
 }
 
+
 /* Open the navbar*/
 nav.open {
     transform: translate(0, 0);
     box-shadow: 1px 1px 2px;
 }
 
-#listSect {
-    background-color: #E8E8E8;
+
+#list-sect {
+    background-color: #e8e8e8;
 }
 
-.listSectInd{
+
+.list-sect-ind {
     list-style: none;
-    background: #CDCDCD;
+    background: #cdcdcd;
     box-shadow: 1px 1px 2px;
     padding: 5px 5px 5px 5px;
     margin:  3px 60px 5px 1px;
 }
 
-.listWikiSec{
-    background: #CDCDCD;
+
+.listwikisec {
+    background: #cdcdcd;
     box-shadow: 1px 1px 2px;
     margin: 3px 60px 8px 1px;
     padding: 5px 15px 5px 15px;
 }
 
-.listSectInd:hover {
+
+.list-sect-ind:hover {
     background-color: yellow;
 }
 
-.listWikiSec:hover {
+
+.listwikisec:hover {
     background-color: yellow;
 }
 
-.searchPl{
+
+.searchpl {
     list-style: none;
-    background: #CDCDCD;
+    background: #cdcdcd;
     box-shadow: 1px 1px 2px;
     padding: 5px 5px 5px 5px;
 }
 
-.searchPl:hover {
+
+.searchpl:hover {
     background-color: yellow;
 }
 
- #mapDiv {
+
+ #map-div {
     margin-left: -10px;
     position: absolute;
     height: 100%;

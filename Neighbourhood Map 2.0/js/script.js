@@ -6,28 +6,36 @@
 // Array of places
 
 var interests = [
-                {location:"Georgia Institute of Technology"},
-                {location:"Sivas Atlanta"},
-                {location:"Federal Reserve Bank of Atlanta"},
-                {location: "Atlanta Biltmore Hotel"},
-                {location:"Atlantic Station"},
-                {location:"Piedmont Park"},
-                {location: "Tech Square"},
-                {location: "Fox Theatre Atlanta"},
-                {location: "Georgia Aquarium"},
-                {location: "Peachtree Walk Condominums"}
+                {location: 'Georgia Institute of Technology'},
+                {location: 'Sivas Atlanta'},
+                {location: 'Federal Reserve Bank of Atlanta'},
+                {location: 'Atlanta Biltmore Hotel'},
+                {location: 'Atlantic Station'},
+                {location: 'Piedmont Park'},
+                {location: 'Georgia Tech Square'},
+                {location: 'Fox Theatre Atlanta'},
+                {location: 'Georgia Aquarium'},
+                {location: 'Peachtree Walk Condominums'}
                 ]
 
-var markerArr=[]
-console.log(markerArr)
+var markerArr=[];
 
+var vm;
 
-var newInterests = []
+var errvm;
 
+var newInterests = [];
+
+var wikiResults = [];
 
 // Takes array of interests and creates a model from them
 
 var ViewModel = function(){
+  if (typeof google === 'undefined'){
+    var self = this;
+    this.errHandle = ko.observable('')
+  } else{
+
     // Assign self to this. Makes passing things around clearer with a function in a function?
     var self = this;
 
@@ -35,7 +43,7 @@ var ViewModel = function(){
    // console.log(this.interestsArr())
 
     // User searches
-    self.query = ko.observable("")
+    self.query = ko.observable('')
 
     // Take in each location and creates a binding K.O. binding model
     newInterests.forEach(function(aLocation){
@@ -48,9 +56,6 @@ var ViewModel = function(){
 
     // Take in the locationModels and mark their position on the map
     self.interestsArr().forEach(function (aLocation) {
-
-
-
       var name = aLocation.marker.title
       var address = aLocation.marker.address
       var lat = aLocation.marker.position.lat()
@@ -60,7 +65,6 @@ var ViewModel = function(){
       marker.addListener('click', function() {
         wikiQuery(name)
         makeBounce()
-
     });
 
       function makeBounce(){
@@ -70,7 +74,7 @@ var ViewModel = function(){
         }
         if (marker.getAnimation() == null){
           marker.setAnimation(google.maps.Animation.BOUNCE)
-          infoWindow.setContent(name+"<br>"+address)
+          infoWindow.setContent(name+'<br>'+address)
           infoWindow.open(map, marker);
         }
         else { marker.setAnimation(null)}
@@ -93,17 +97,17 @@ var ViewModel = function(){
     // When location is clicked set it to current location
     this.setCurrentLocation = function(locationClicked){
         self.currentLocation(locationClicked)
-        query = document.getElementById("current").innerHTML
+        query = locationClicked.locationName()
 
         //animate and open window here
         google.maps.event.trigger(locationClicked.marker, 'click');
 
         wikiQuery(query)
+
     }
 
     // Filtering array assistance obtained from
     //http://stackoverflow.com/questions/32343306/live-table-search-in-knockout-calling-function-on-keyup
-
 
     self.filteredPl = ko.computed(function(){
       var searches = self.query().toLowerCase()
@@ -125,6 +129,15 @@ var ViewModel = function(){
         })
         }
         })
+
+    // Wikipedia VM section
+    this.wikiTitle = ko.observable('')
+    this.wikiArticle = ko.observable('')
+    this.wikiLink = ko.observable('')
+
+    // Error handling
+    this.errHandle = ko.observable('')
+  }
 }
 
 
@@ -133,10 +146,7 @@ var ViewModel = function(){
 var locationModel= function(info){
     this.locationName = ko.observable(info.location)
     this.marker = info.marker
-
 }
 
 
-  // Calls the initializeMap() function when the page loads
-window.addEventListener('load', initializeMap);
 

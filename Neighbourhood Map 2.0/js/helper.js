@@ -1,85 +1,72 @@
-//When the markers array is the length of the interests array do this
+// When the markers array is the length of the interests array do this
 function createNewArray(){
 
 if(interests.length == markerArr.length){
-
-//console.log(markerArr)
-
-for(var i=0; i<interests.length;i++){
-    newInterests[i] = {location: interests[i].location, marker: markerArr[i]}
-
+  for(var i=0; i<interests.length;i++){
+    newInterests[i] = {location: markerArr[i].title, marker: markerArr[i]}
 }
 
 //Bind with new array. After all the callbacks have been executed.
-ko.applyBindings(new ViewModel())
-//console.log(newInterests)
+vm = new ViewModel()
+
+ko.applyBindings(vm)
+
+
 }
+
 }
-
-
-
-
 //Nav bar
   /*
    * Open the drawer when the menu icon is clicked.
    */
-  var menu = document.querySelector('#menu');
-  var main = document.querySelector('#main');
-  var list = document.querySelector('#listSect');
+var menu = document.querySelector('#menu');
+var main = document.querySelector('#main');
+var list = document.querySelector('#list-sect');
 
-  menu.addEventListener('click', function(e) {
-    list.classList.toggle('open');
-    e.stopPropagation();
+menu.addEventListener('click', function(e){
+  list.classList.toggle('open');
+  e.stopPropagation();
   });
 
 
 //Wiki query function
 function wikiQuery(query){
-    var compiled = ""
-    var $wikiElem = $('#wiki-articles');
-
+    var compiled = ''
 
     var wikiurl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search='+ query+'&format=json&callback=wikicallback';
 
     //Deal with failed requests
     var wikiRequestTimeout = setTimeout(function(){
-    $wikiElem.text ('Failed to get a response from wikipedia');
+     vm.wikiTitle('Failed to get a response from wikipedia');
+     vm.wikiArticle('')
+     vm.wikiLink('#')
 
 },5000)
 
 //Wiki API request
 $.ajax({
-    url: wikiurl,
-    dataType: 'jsonp',
+  url: wikiurl,
+  dataType: 'jsonp',
+  success: function(data){
+    // Handle queries that do not return a search result
 
-
-    success: function(data){
-        //console.log(data)
-        // Handle queries that do not return a search result
-        if(data[1][0] == undefined){
-          compiled = "There does not appear to be a Wikipedia article for this."
-          $wikiElem.text("");
-          $wikiElem.append(compiled);
-
-        }
-        else{
-          for (var i = 0; i < 1; i++) {
-           title = data[1][i] ;
-           extract = data[2][i];
-           link = data[3][i];
-           compiled = compiled + "<div class = 'results_fo'><a href='" + link + "'target='_blank'><h1>" + title + "</h1><p>" + extract + "</p></a></div>"
-           //Clear Old text
-           $wikiElem.text("");
-           $wikiElem.append(compiled);
-        }
-
+    if(data[1][0] == undefined){
+      vm.wikiTitle('There does not appear to be a Wikipedia article for this.')
+      vm.wikiArticle('')
+      vm.wikiLink('#')
+      }
+    else{
+      for (var i = 0; i < 1; i++) {
+       title = data[1][i] ;
+       extract = data[2][i];
+       link = data[3][i];
+       vm.wikiTitle(title)
+       vm.wikiArticle(extract)
+       vm.wikiLink(link)
        }
-
-        clearTimeout(wikiRequestTimeout)
-    }
-
-
-
+   }
+    clearTimeout(wikiRequestTimeout)
+  }
 })
 
 }
@@ -94,12 +81,10 @@ var bounds
 function initializeMap(){
 
 //Append map to the map div
-map = new google.maps.Map(document.getElementById('mapDiv'));
+map = new google.maps.Map(document.getElementById('map-div'));
+
 
 bounds = new google.maps.LatLngBounds();
-
-
-
 
 /*
   createMapMarker(placeData) reads Google Places search results to create map pins.
@@ -127,10 +112,7 @@ bounds = new google.maps.LatLngBounds();
 
     // Push markers into new array to be used in creation of new array containing places and markers
     markerArr.push(marker)
-        // Resize map
-   // map.fitBounds(bounds);
-    //Center map
-   // map.setCenter(bounds.getCenter());
+
 
     // Create a new array containing location and markers for Knockout model to be created from.
     // Last thing in callback
@@ -138,17 +120,22 @@ bounds = new google.maps.LatLngBounds();
 
     };
 
+
     function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
       createMapMarker(results[0]);
-
+        } else {
+          console.log('Google places DB down')
+          vm.errHandle('Google Places DB did not respond.')
+        }
     }
-  }
+
 
    function placesArr(locations){
     // creates a Google place search service object. PlacesService does the work of
     // actually searching for location data.
     var service = new google.maps.places.PlacesService(map);
+
 
     // Iterates through the array of locations, creates a search object for each location
     for (var i = 0; i < locations.length; i++) {
@@ -158,8 +145,7 @@ bounds = new google.maps.LatLngBounds();
      };
         service.textSearch(request, callback);
     })(i)
-
-}
+    }
      // locations.forEach(function(place){
       // the search request object
      // var request = {
@@ -172,4 +158,14 @@ bounds = new google.maps.LatLngBounds();
    }
 placesArr(interests);
 
+}
+
+
+function googleDbError(){
+  //Bind with new array. After all the callbacks have been executed.
+  vm = new ViewModel()
+
+  ko.applyBindings(vm, document.getElementById('errhandle'))
+  vm.errHandle('Google Maps DB did not respond in a timely manner')
+  console.log('Google error')
 }

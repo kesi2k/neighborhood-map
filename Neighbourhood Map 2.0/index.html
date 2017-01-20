@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
     <body>
+    <main>
         <div class="row">
             <div class="col-md-12">
                 <h2 id="greeting" class="greeting">Neighbourhood Map</h2>
+                <p id = "errhandle" data-bind="text:errHandle"></p>
             </div>
         </div>
         <a id="menu">
@@ -18,27 +20,32 @@
             <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
             </svg>
         </a>
-        <nav class="" id="listSect">
+        <nav class="" id="list-sect">
             <h3>List of places</h3>
                 <ul data-bind= 'foreach: filteredPl()'>
-                    <li data-bind= 'text:locationName, click: $parent.setCurrentLocation' class="listSectInd">
+                    <li data-bind= 'text:locationName, click: $parent.setCurrentLocation' class="list-sect-ind"></li>
                 </ul>
                 <div class="col-md-12" id="wikiSec">
                     <h3>Wikipedia section</h3>
-                    <div data-bind = 'with: currentLocation()'>
-                    <p id = "current" data-bind = 'text:locationName' class="hidden"></p>
+                    <div class="listwikisec">
+                        <a data-bind="attr:{href:wikiLink}" target="_blank">
+                            <h3 data-bind='text:wikiTitle'></h3>
+                            <p data-bind="text:wikiArticle"></p>
+                        </a>
                     </div>
-                    <ul id="wiki-articles" class="listWikiSec">Wiki articles will go here</ul>
                 </div>
         </nav>
         <div class ="row">
                 <div class="" id="map-title">
-                    <label class="searchPl">Search places:</label>
+                    <label class="searchpl">Search places:</label>
                     <input type="search" class="form-control" data-bind="textInput: query" autocomplete="off" />
-                    <div id="mapDiv">
+                    <figure>
+                    <div id="map-div">
                     </div>
+                    </figure>
                 </div>
         </div>
+        </main>
 
     <script src="js/libs/jquery.min.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
@@ -47,7 +54,7 @@
     <script src="js/helper.js"></script>
     <script src="js/script.js"></script>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-
+    <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzpZaX46f3EBBvLigJIkHN93hQSffkSuY&libraries=places&callback=initializeMap" onerror="googleDbError()"></script>
     </body>
 </html>
